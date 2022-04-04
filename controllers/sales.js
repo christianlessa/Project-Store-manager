@@ -3,7 +3,7 @@ const { serviceSales } = require('../services/serviceSales');
 
 const getAllSalesCrtl = async (req, res) => {
   const sales = await getAllSales();
-  res.status(200).json(sales);
+  return res.status(200).json(sales);
 };
 
 const getByIdSalesCrtl = async (req, res) => {
