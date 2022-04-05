@@ -15,22 +15,46 @@ const getAllSales = async () => {
   return result;
 };
 
-const getByIdSalesMdl = async (id) => {
+const getByIdSalesMdls = async (id) => {
   const [saleId] = await connection.execute(
     `SELECT s.date,
-    sp.product_id AS productId,
-    sp.quantity
+      sp.product_id AS productId,
+      sp.quantity
     FROM StoreManager.sales AS s
     INNER JOIN StoreManager.sales_products AS sp
     ON s.id = sp.sale_id
     WHERE sp.sale_id = ?
-    ORDER BY sp.sale_id ASC, productId ASC`,
+    ORDER BY sp.sale_id ASC, productId ASC;`,
     [id],
   );
   return saleId;
 };
 
+// função criada com ajuda do Ricci na mentoria.
+const createSalesProductMdls = async (requestBody) => {
+  const [sale] = await connection.execute(
+    `INSERT INTO
+      StoreManager.sales
+      (date)
+    VALUES
+      (NOW());`,
+  );
+  
+  await Promise.all(requestBody.map(async (elem) => {
+    await connection.execute(
+      `INSERT INTO
+        StoreManager.sales_products 
+        (sale_id, product_id, quantity)
+      VALUES 
+        (?, ?, ?);`,
+      [sale.insertId, elem.productId, elem.quantity],
+    );
+  }));
+  return sale;
+};
+
 module.exports = {
   getAllSales,
-  getByIdSalesMdl,
+  getByIdSalesMdls,
+  createSalesProductMdls,
 };

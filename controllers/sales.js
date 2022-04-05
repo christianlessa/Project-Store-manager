@@ -1,5 +1,5 @@
 const { getAllSales } = require('../models/salesModels');
-const { serviceSales } = require('../services/serviceSales');
+const { serviceSales, serviceCreateSales } = require('../services/serviceSales');
 
 const getAllSalesCrtl = async (req, res) => {
   const sales = await getAllSales();
@@ -17,7 +17,21 @@ const getByIdSalesCrtl = async (req, res) => {
   return res.status(200).json(sales);
 };
 
+const createSalesProductCrtl = async (req, res) => {
+  const requestBody = req.body;
+  
+  const result = await serviceCreateSales(requestBody);
+
+  const obj = {
+    id: result.insertId,
+    itemsSold: requestBody,
+  };
+
+  return res.status(201).json(obj);
+};
+
 module.exports = {
   getAllSalesCrtl,
   getByIdSalesCrtl,
+  createSalesProductCrtl,
 };
