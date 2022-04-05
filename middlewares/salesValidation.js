@@ -11,6 +11,7 @@ const productIdSalesValid = (req, res, next) => {
 const quantitySalesValid = (req, res, next) => {
   const quantityBody = req.body;
 
+  // if feito com ajuda de Renan Souza.
   if (quantityBody.some(({ quantity }) => quantity === undefined)) {
     return res.status(400).json({ message: '"quantity" is required' });
   }
