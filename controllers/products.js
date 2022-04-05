@@ -1,6 +1,6 @@
-const { listAllProducts } = require('../models/productsModels');
-const { serviceProduct } = require('../services/serviceProducts');
+const { listAllProducts, getByIdProductMdls } = require('../models/productsModels');
 const { serviceProductCreate } = require('../services/serviceProducts');
+const { serviceProduct, serviceProductUpdate } = require('../services/serviceProducts');
 
 const getAllProducts = async (req, res) => {
   const result = await listAllProducts();
@@ -31,8 +31,30 @@ const createProductCrtl = async (req, res) => {
   return res.status(201).json(obj);
 };
 
+const updateProductCrtl = async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+
+  const getIdProduct = await getByIdProductMdls(id);
+
+  await serviceProductUpdate({ id, name, quantity });
+
+  const productUpdated = {
+    id,
+    name,
+    quantity,
+  };
+  
+  if (!getIdProduct) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+
+  return res.status(200).json(productUpdated);
+};
+
 module.exports = {
   getAllProducts,
   getByIdProductCtrl,
   createProductCrtl,
+  updateProductCrtl,
 };
