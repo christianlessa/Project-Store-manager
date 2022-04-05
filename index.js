@@ -9,8 +9,8 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use('/products', productsRoutes.router);
-app.use('/sales', salesRoutes.router);
+app.use('/products', productsRoutes);
+app.use('/sales', salesRoutes);
 
 app.use(middleError);
 

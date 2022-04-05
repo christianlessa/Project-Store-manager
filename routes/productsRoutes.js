@@ -14,6 +14,4 @@ router.post('/', nameProductValid, createProductNameValid, quantityProductValid,
 router.put('/:id', nameProductValid, quantityProductValid, updateProductCrtl);
 router.delete('/:id', deleteProductCrtl);
 
-module.exports = {
-  router,
-};
+module.exports = router;

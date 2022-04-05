@@ -11,6 +11,4 @@ router.get('/:id', getByIdSalesCrtl);
 router.post('/', productIdSalesValid, quantitySalesValid, createSalesProductCrtl);
 router.put('/:id', productIdSalesValid, quantitySalesValid, updateSalesCrtl);
 
-module.exports = {
-  router,
-};
+module.exports = router;
