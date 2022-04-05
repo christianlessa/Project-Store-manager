@@ -53,8 +53,24 @@ const createSalesProductMdls = async (requestBody) => {
   return sale;
 };
 
+const updateSalesMdls = async (requestBody, id) => {
+  await Promise.all(requestBody.map(async (elem) => {
+    const [update] = await connection.execute(
+      `UPDATE 
+        StoreManager.sales_products
+      SET 
+        product_id = ?, quantity = ?
+      WHERE 
+        sale_id = ?;`,
+      [elem.productId, elem.quantity, id],
+    );
+    return update;
+  }));
+};
+
 module.exports = {
   getAllSales,
   getByIdSalesMdls,
   createSalesProductMdls,
+  updateSalesMdls,
 };
