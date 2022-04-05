@@ -6,10 +6,10 @@ const listAllProducts = async () => {
 };
 
 const getByIdProductMdls = async (id) => {
-  const [products] = await connection.execute(
+  const [product] = await connection.execute(
     'SELECT * FROM StoreManager.products WHERE id = ?', [id],
   );
-  return products[0];
+  return product[0];
 };
 
 const createProductMdls = async ({ name, quantity }) => {
@@ -22,13 +22,21 @@ const createProductMdls = async ({ name, quantity }) => {
 };
 
 const updateProductMdls = async ({ id, name, quantity }) => {
-  const [products] = await connection.execute(
+  const [product] = await connection.execute(
     `UPDATE StoreManager.products
     SET name = ?, quantity = ?
     WHERE id = ?;`,
     [name, quantity, id],
   );
-  return products;
+  return product;
+};
+
+const deleteProductMdl = async (id) => {
+  const [product] = await connection.execute(
+  `DELETE FROM StoreManager.products 
+  WHERE id = ?`, [id],
+  );
+  return product;
 };
 
 module.exports = {
@@ -36,4 +44,5 @@ module.exports = {
   getByIdProductMdls,
   createProductMdls,
   updateProductMdls,
+  deleteProductMdl,
 };

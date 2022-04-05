@@ -1,5 +1,5 @@
 const { 
-  getByIdProductMdls, createProductMdls, updateProductMdls,
+  getByIdProductMdls, createProductMdls, updateProductMdls, deleteProductMdl,
 } = require('../models/productsModels');
 
 const serviceProduct = async (id) => {
@@ -29,8 +29,18 @@ const serviceProductUpdate = async ({ id, name, quantity }) => {
   }
 };
 
+const serviceProductDelete = async (id) => {
+  try {
+    const result = await deleteProductMdl(id);
+    return result;
+  } catch (e) {
+    console.log(`Erro no banco de dados: ${e}`);
+  }
+};
+
 module.exports = {
   serviceProduct,
   serviceProductCreate,
   serviceProductUpdate,
+  serviceProductDelete,
 };

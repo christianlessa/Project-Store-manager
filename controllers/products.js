@@ -1,6 +1,8 @@
 const { listAllProducts, getByIdProductMdls } = require('../models/productsModels');
 const { serviceProductCreate } = require('../services/serviceProducts');
-const { serviceProduct, serviceProductUpdate } = require('../services/serviceProducts');
+const {
+  serviceProduct, serviceProductUpdate, serviceProductDelete,
+} = require('../services/serviceProducts');
 
 const getAllProducts = async (req, res) => {
   const result = await listAllProducts();
@@ -52,9 +54,24 @@ const updateProductCrtl = async (req, res) => {
   return res.status(200).json(productUpdated);
 };
 
+const deleteProductCrtl = async (req, res) => {
+  const { id } = req.params;
+
+  const getIdProduct = await getByIdProductMdls(id);
+
+  await serviceProductDelete(id);
+
+  if (!getIdProduct) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+
+  return res.status(204).end();
+};
+
 module.exports = {
   getAllProducts,
   getByIdProductCtrl,
   createProductCrtl,
   updateProductCrtl,
+  deleteProductCrtl,
 };
