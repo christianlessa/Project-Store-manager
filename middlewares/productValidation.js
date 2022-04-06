@@ -1,5 +1,3 @@
-const { listAllProducts } = require('../models/productsModels');
-
 const nameProductValid = async (req, res, next) => {
   const { name } = req.body;
 
@@ -30,21 +28,7 @@ const quantityProductValid = (req, res, next) => {
   next();
 };
 
-const createProductNameValid = async (req, res, next) => {
-  const { name } = req.body;
-
-  const getProductsName = await listAllProducts();
-  const result = getProductsName.some((product) => name === product.name);
-
-  if (result) {
-    return res.status(409).json({ message: 'Product already exists' });
-  }
-
-  next();
-};
-
 module.exports = {
   nameProductValid,
   quantityProductValid,
-  createProductNameValid,
 };

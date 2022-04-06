@@ -1,7 +1,8 @@
 const { listAllProducts, getByIdProductMdls } = require('../models/productsModels');
-const { serviceProductCreate } = require('../services/serviceProducts');
+
 const {
-  serviceProduct, serviceProductUpdate, serviceProductDelete,
+  serviceProduct, serviceProductName, serviceProductCreate,
+  serviceProductUpdate, serviceProductDelete,
 } = require('../services/serviceProducts');
 
 const getAllProducts = async (req, res) => {
@@ -22,6 +23,13 @@ const getByIdProductCtrl = async (req, res) => {
 
 const createProductCrtl = async (req, res) => {
   const { name, quantity } = req.body;
+
+  const getProductName = await serviceProductName({ name });
+
+  if (getProductName.length >= 1) {
+    return res.status(409).json({ message: 'Product already exists' });
+  }
+
   const result = await serviceProductCreate({ name, quantity });
 
   const obj = {

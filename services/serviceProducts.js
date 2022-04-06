@@ -1,11 +1,20 @@
 const { 
-  getByIdProductMdls, createProductMdls, updateProductMdls, deleteProductMdls,
+  getByIdProductMdls, createProductMdls, updateProductMdls, deleteProductMdls, getByNameMdls,
 } = require('../models/productsModels');
 
 const serviceProduct = async (id) => {
   try {
     const result = await getByIdProductMdls(id);
     return result;
+  } catch (e) {
+    console.log(`Erro no banco de dados: ${e}`);
+  }
+};
+
+const serviceProductName = async ({ name }) => {
+  try {
+    const getProductName = await getByNameMdls({ name });
+    return getProductName;
   } catch (e) {
     console.log(`Erro no banco de dados: ${e}`);
   }
@@ -40,6 +49,7 @@ const serviceProductDelete = async (id) => {
 
 module.exports = {
   serviceProduct,
+  serviceProductName,
   serviceProductCreate,
   serviceProductUpdate,
   serviceProductDelete,
