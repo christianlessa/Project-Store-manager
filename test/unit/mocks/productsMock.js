@@ -23,5 +23,10 @@ module.exports = {
       name: "produto B",
       quantity: 20
     }
-  ]
+  ],
+
+  error: {
+    err: 500,
+    message: 'Erro no banco de dados'
+  }
 }

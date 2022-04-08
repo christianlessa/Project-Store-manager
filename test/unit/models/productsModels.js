@@ -1,11 +1,11 @@
-const { expect } = require("chai");
+const { expect } = require('chai');
 const sinon = require('sinon');
 const connection = require('../../../models/connection');
-const productsMdls = require('../../../models/productsModels');
 const productsMock = require('../mocks/productsMock');
+const productsMdls = require('../../../models/productsModels');
 
-describe('productModel', () => {
-  describe('A função `listAllProducts` deve', () => {
+describe('Testando ProductModel', () => {
+  describe('1 - A função `listAllProducts`', () => {
     before(() => {
       sinon.stub(connection, 'execute').resolves([productsMock.fullProductsArray]);
     });
@@ -14,13 +14,13 @@ describe('productModel', () => {
       connection.execute.restore();
     });
 
-    it('retornar um array de objeto de produtos', async () => {
+    it('1.1 - retorna um array de objeto de produtos ao ser chamada', async () => {
       const products = await productsMdls.listAllProducts();
       expect(products).to.be.deep.equal(productsMock.fullProductsArray);
     });
   });
 
-  describe('a função getByNameMdls deve', () => {
+  describe('2 - A função getByNameMdls', () => {
     before(() => {
       sinon.stub(connection, 'execute').resolves([productsMock.singleProductId]);
     });
@@ -29,14 +29,13 @@ describe('productModel', () => {
       connection.execute.restore();
     });
 
-    it('Retornar objeto do produto igual ao name', async () => {
-      const products = await productsMdls.getByNameMdls(productsMock.singleProductId.name);
-      expect(products).to.deep.equal(productsMock.singleProductId);
+    it('2.1 - Dado um nome, retorna um objeto do produto igual ao name', async () => {
+      const product = await productsMdls.getByNameMdls(productsMock.singleProductId.name);
+      expect(product).to.deep.equal(productsMock.singleProductId);
     });
-
   });
 
-  describe('a função getByNameMdls deve', () => {
+  describe('3 - A função getByNameMdls', () => {
     before(() => {
       sinon.stub(connection, 'execute').resolves([productsMock.emptyObj]);
     });
@@ -45,13 +44,13 @@ describe('productModel', () => {
       connection.execute.restore();
     });
 
-    it('Retornar um objeto vazio caso name nao existir', async () => {
+    it('3.1 - Retorna um objeto vazio caso name nao existir', async () => {
       const product = await productsMdls.getByNameMdls(productsMock.singleProductId.name);
       expect(product).to.be.deep.equal(productsMock.emptyObj);
     });
   }); 
   
-  describe('a função getByIdProductMdls deve', () => {
+  describe('4 - A função getByIdProductMdls', () => {
     const arrayProduct = [productsMock.singleProductId];
 
     before(() => {
@@ -62,7 +61,7 @@ describe('productModel', () => {
       connection.execute.restore();
     });
 
-    it('Retornar objeto do produto igual ao id', async () => {
+    it('4.1 - Dado um id, retorna um objeto do produto igual ao id', async () => {
       const products = await productsMdls.getByIdProductMdls(1);
       expect(products).to.be.deep.equal(productsMock.singleProductId);
     });
