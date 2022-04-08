@@ -21,7 +21,6 @@ const getByNameMdls = async ({ name }) => {
     name = ?;`,
   [name],
   );
-  console.log(product);
   return product;
 };
 
