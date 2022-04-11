@@ -66,4 +66,21 @@ describe('Testando ProductModel', () => {
       expect(products).to.be.deep.equal(productsMock.singleProductId);
     });
   });
+
+  describe('5 - A função createProductMdls', () => {
+    const arrayProduct = [productsMock.singleProductId];
+
+    before(() => {
+      sinon.stub(connection, 'execute').resolves(arrayProduct);
+    });
+
+    after(() => {
+      connection.execute.restore();
+    });
+
+    it('5.1 - retorna um objeto do produto criado', async () => {
+      const products = await productsMdls.createProductMdls(productsMock.singleProduct);
+      expect(products).to.be.deep.equal(productsMock.singleProductId);
+    });
+  });
 });

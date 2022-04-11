@@ -64,4 +64,19 @@ describe('Testando ProductServices', () => {
       expect(product).to.be.deep.equal(productsMock.updateProduct);
     });
   });
+
+  describe('5 - A função serviceProductDelete', () => {
+    before(() => {
+      sinon.stub(productModels, 'deleteProductMdls').resolves(1);
+    });
+
+    after(() => {
+      productModels.deleteProductMdls.restore();
+    });  
+
+    it('5.1 - Deve deletar o produto do id passado', async () => {
+      const product = await productService.serviceProductDelete(1);
+      expect(product).to.be.deep.equal(1);
+    });
+  });
 });

@@ -16,7 +16,6 @@ const getAllSales = async () => {
     ORDER BY
       saleId ASC, productId ASC;`,
   );
-
   return result;
 };
 
