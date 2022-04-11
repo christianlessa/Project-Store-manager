@@ -1,21 +1,20 @@
-const { 
-  getByIdProductMdls, createProductMdls, updateProductMdls, deleteProductMdls, getByNameMdls,
-} = require('../models/productsModels');
+const productModels = require('../models/productsModels');
 
 const ERROR = 'Erro no banco de dados';
 
 const serviceProduct = async (id) => {
   try {
-    const result = await getByIdProductMdls(id);
+    const result = await productModels.getByIdProductMdls(id);
     return result;
   } catch (err) {
-    return { err: 500, message: ERROR };
+    console.log(err.message, 'erro no service');
+    return err.message;
   }
 };
 
 const serviceProductName = async ({ name }) => {
   try {
-    const getProductName = await getByNameMdls({ name });
+    const getProductName = await productModels.getByNameMdls({ name });
     return getProductName;
   } catch (err) {
     return { err: 500, message: ERROR };
@@ -24,7 +23,7 @@ const serviceProductName = async ({ name }) => {
 
 const serviceProductCreate = async ({ name, quantity }) => {
   try {
-    const result = await createProductMdls({ name, quantity });
+    const result = await productModels.createProductMdls({ name, quantity });
     return result;
   } catch (err) {
     return { err: 500, message: ERROR };
@@ -33,7 +32,7 @@ const serviceProductCreate = async ({ name, quantity }) => {
 
 const serviceProductUpdate = async ({ id, name, quantity }) => {
   try {
-    const result = await updateProductMdls({ id, name, quantity });
+    const result = await productModels.updateProductMdls({ id, name, quantity });
     return result;
   } catch (err) {
     return { err: 500, message: ERROR };
@@ -42,7 +41,7 @@ const serviceProductUpdate = async ({ id, name, quantity }) => {
 
 const serviceProductDelete = async (id) => {
   try {
-    const result = await deleteProductMdls(id);
+    const result = await productModels.deleteProductMdls(id);
     return result;
   } catch (err) {
     return { err: 500, message: ERROR };

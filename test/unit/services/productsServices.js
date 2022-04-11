@@ -1,66 +1,67 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
-const connection = require('../../../models/connection');
 const productsMock = require('../mocks/productsMock');
+const productModels = require('../../../models/productsModels');
 const productService = require('../../../services/serviceProducts');
 
 describe('Testando ProductServices', () => {
   describe('1 - A função serviceProduct', () => {
-    const arrayProduct = [productsMock.singleProductId];
-
     before(() => {
-      sinon.stub(connection, 'execute').resolves([arrayProduct]);
+      sinon.stub(productModels, 'getByIdProductMdls').resolves(productsMock.singleProductId);
     });
 
     after(() => {
-      connection.execute.restore();
+      productModels.getByIdProductMdls.restore();
     });
 
-    it('1.1 - Dado um id, retorna um objeto do produto igual ao id', async () => {
+    it('1.1 - passado id, retorna o objeto do id', async () => {
       const product = await productService.serviceProduct(1);
       expect(product).to.be.deep.equal(productsMock.singleProductId);
     });
   });
 
   describe('2 - A função serviceProductName', () => {
-    const arrayProduct = [productsMock.singleProductId];
-
     before(() => {
-      sinon.stub(connection, 'execute').resolves([arrayProduct]);
+      sinon.stub(productModels, 'getByNameMdls').resolves(productsMock.singleProductId);
     });
 
     after(() => {
-      connection.execute.restore();
-    });
+      productModels.getByNameMdls.restore();
+    });  
 
-    it('2.1 - Dado um nome, retorna um objeto do produto igual ao name', async () => {
-      const product = await productService.serviceProduct(productsMock.singleProductId.name);
-      expect(product).to.deep.equal(productsMock.singleProductId);
+    it('2.1 - passado name, retorna o objeto do nome', async () => {
+      const product = await productModels.getByNameMdls("produto A");
+      expect(product).to.be.deep.equal(productsMock.singleProductId);
     });
   });
 
-  describe('3 - Deve retornar `Error` com status: 500 da função', () => {
+  describe('3 - A função serviceProductCreate', () => {
     before(() => {
-      sinon.stub(connection, 'execute').resolves(productsMock.error);
+      sinon.stub(productModels, 'createProductMdls').resolves(productsMock.createProdut);
     });
 
     after(() => {
-      connection.execute.restore();
+      productModels.createProductMdls.restore();
     });
 
-    it('3.1 - serviceProduct se passar um id inexistente', async () => {
-      const product = await productService.serviceProduct();
-      expect(product).to.be.deep.equal(productsMock.error);
+    it('3.1 - Deve criar e retornar um objeto com id, name e quantity', async () => {
+      const product = await productService.serviceProductCreate(productsMock.singleProduct);
+      expect(product).to.be.deep.equal(productsMock.createProdut);
+    });
+  });
+
+  describe('4 - A função serviceProductUpdate', () => {
+    before(() => {
+      sinon.stub(productModels, 'updateProductMdls').resolves(productsMock.updateProduct);
     });
 
-    it('3.2 - serviceProductName se passar um id inexistente', async () => {
-      const product = await productService.serviceProductName('');
-      expect(product).to.be.deep.equal(productsMock.error);
-    });
+    after(() => {
+      productModels.updateProductMdls.restore();
+    });  
 
-    it('3.3 - serviceProductCreate se passar um id inexistente', async () => {
-      const product = await productService.serviceProductCreate('');
-      expect(product).to.be.deep.equal(productsMock.error);
+    it('4.1 - passado name e quantity, atualiza e retorna o objeto do nome', async () => {
+      const product = await productService.serviceProductUpdate(productsMock.singleProductId);
+      expect(product).to.be.deep.equal(productsMock.updateProduct);
     });
   });
 });
